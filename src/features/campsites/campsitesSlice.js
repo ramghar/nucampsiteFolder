@@ -1,7 +1,6 @@
 import { CAMPSITES } from '../../app/shared/CAMPSITES'
 
 
-
 export const selectAllCampsites = () => {
   return CAMPSITES;
 }
@@ -11,6 +10,3 @@ return CAMPSITES.find((campsite) => campsite.id === id);
 
 }
 
-// export const selectRandomCampsite = () => {
-//     return CAMPSITES[Math.floor(CAMPSITES.length * Math.random())];
-// };
