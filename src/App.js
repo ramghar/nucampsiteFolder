@@ -9,6 +9,14 @@ import './App.css';
 import CampsiteDetail from './features/campsites/CampsiteDetail';
 import AboutPage from './pages/AboutPage';
 
+// import{
+//   CampsiteDetailPage,
+//   CampsitesDirectoryPage,
+//   AboutPage,
+//   HomePage,
+//   ContactPage,
+
+// }
 
 function App() {
   return (
