@@ -1,5 +1,3 @@
-
-
 export const formatDate = (date) => {
     return new Intl.DateTimeFormat('en-US', {
         year: 'numeric',
@@ -7,4 +5,3 @@ export const formatDate = (date) => {
         day: '2-digit'
     }).format(new Date(Date.parse(date)));
 };
-

@@ -1,53 +1,58 @@
-
-import { useState } from "react";
-import { Button, Modal, ModalHeader, ModalBody, FormGroup, Label } from 'reactstrap';
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import { validateCommentForm } from "../../utils/validateCommentForm";
-import { useDispatch } from "react-redux";
-import { addComment } from "./commentsSlice";
+import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
+import {
+    Button,
+    Modal,
+    ModalHeader,
+    ModalBody,
+    Label,
+    FormGroup
+} from 'reactstrap';
+import { validateCommentForm } from '../../utils/validateCommentForm';
+import { addComment } from './commentsSlice';
+import { selectCurrentUser } from '../user/userSlice';
 
 const CommentForm = ({ campsiteId }) => {
-    
     const [modalOpen, setModalOpen] = useState(false);
+    const currentUser = useSelector(selectCurrentUser);
     const dispatch = useDispatch();
-    
+
     const handleSubmit = (values) => {
-        const comment = 
-        {
+        const comment = {
             campsiteId: parseInt(campsiteId),
             rating: values.rating,
             author: values.author,
             text: values.commentText,
             date: new Date(Date.now()).toISOString()
         };
-        console.log("comment: ", comment);
+        console.log('comment:', comment);
         dispatch(addComment(comment));
-        setModalOpen(false)
-    }
+        setModalOpen(false);
+    };
+
     return (
         <>
             <Button outline onClick={() => setModalOpen(true)}>
                 <i className='fa fa-pencil fa-lg' /> Add Comment
             </Button>
             <Modal isOpen={modalOpen}>
-                < ModalHeader toggle={() => setModalOpen(false)}>
+                <ModalHeader toggle={() => setModalOpen(false)}>
                     Add Comment
                 </ModalHeader>
                 <ModalBody>
-                    <Formik 
-                       initialValues =
-                        {{
+                    <Formik
+                        initialValues={{
                             rating: undefined,
-                            author: '',
-                            commentText:'',
-
+                            author: currentUser ? currentUser.username : '',
+                            commentText: ''
                         }}
-                        onSubmit = {handleSubmit}
+                        onSubmit={handleSubmit}
                         validate={validateCommentForm}
                     >
                         <Form>
                             <FormGroup>
-                                <Label htmlFor='rating'> Rating</Label>
+                                <Label htmlFor='rating'>Rating</Label>
                                 <Field
                                     name='rating'
                                     as='select'
@@ -60,12 +65,9 @@ const CommentForm = ({ campsiteId }) => {
                                     <option>4</option>
                                     <option>5</option>
                                 </Field>
-
-                                <ErrorMessage name= 'rating'>
+                                <ErrorMessage name='rating'>
                                     {(msg) => <p className='text-danger'>{msg}</p>}
                                 </ErrorMessage>
-
-
                             </FormGroup>
                             <FormGroup>
                                 <Label htmlFor='author'>Your Name</Label>
@@ -74,15 +76,9 @@ const CommentForm = ({ campsiteId }) => {
                                     placeholder='Your Name'
                                     className='form-control'
                                 />
-
-
-
-                                <ErrorMessage name= 'author'>
+                                <ErrorMessage name='author'>
                                     {(msg) => <p className='text-danger'>{msg}</p>}
                                 </ErrorMessage>
-
-
-                                
                             </FormGroup>
                             <FormGroup>
                                 <Label htmlFor='commentText'>Comment</Label>
@@ -102,7 +98,6 @@ const CommentForm = ({ campsiteId }) => {
             </Modal>
         </>
     );
-
 };
 
 export default CommentForm;
